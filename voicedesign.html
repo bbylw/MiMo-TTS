@@ -6,68 +6,70 @@
   <title>MiMo TTS · VoiceDesign</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="min-h-screen bg-slate-950 text-slate-100">
-  <main class="max-w-5xl mx-auto px-4 py-8 space-y-5">
-    <nav class="text-sm text-slate-300 flex flex-wrap gap-4">
-      <a href="index.html" class="underline">首页</a>
-      <a href="tts.html" class="underline">Built-in TTS</a>
-      <a href="voiceclone.html" class="underline">VoiceClone</a>
+<body class="min-h-screen bg-slate-950 text-slate-100 antialiased">
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 py-8 space-y-6">
+    <nav class="rounded-2xl border border-white/10 bg-slate-900/70 p-4 text-sm text-slate-300 flex flex-wrap items-center gap-4 backdrop-blur">
+      <a href="index.html" class="hover:text-white">首页</a>
+      <span class="text-slate-600">/</span>
+      <a href="tts.html" class="hover:text-white">Built-in TTS</a>
+      <a href="voiceclone.html" class="hover:text-white">VoiceClone</a>
+      <span class="ml-auto text-xs text-emerald-200 border border-emerald-300/30 rounded-full px-2.5 py-1">Voice Design</span>
     </nav>
 
-    <header class="rounded-2xl border border-emerald-500/30 bg-gradient-to-br from-slate-900 to-emerald-950 p-6">
-      <h1 class="text-2xl font-bold">mimo-v2.5-tts-voicedesign</h1>
-      <p class="text-sm text-slate-300 mt-2">该模型仅使用 user 消息中的音色描述（voice design prompt）来塑造声音；不提供单独方言设置，不支持内置音色与唱歌。</p>
+    <header class="rounded-3xl border border-emerald-400/30 bg-gradient-to-br from-slate-900 to-emerald-950/70 p-7 shadow-2xl shadow-emerald-950/25">
+      <h1 class="text-2xl sm:text-3xl font-bold">mimo-v2.5-tts-voicedesign</h1>
+      <p class="text-sm text-slate-300 mt-3">该模型仅使用 user 中的音色描述塑造声音。全新界面将提示、示例与输入区整合为一体，提高 prompt 设计效率。</p>
     </header>
 
     <section class="grid lg:grid-cols-3 gap-4">
-      <div class="lg:col-span-2 rounded-2xl border border-slate-800 bg-slate-900 p-5 space-y-4">
+      <div class="lg:col-span-2 rounded-3xl border border-white/10 bg-slate-900/70 p-5 sm:p-6 space-y-5 backdrop-blur">
         <div>
           <label class="text-sm text-slate-300">文本（assistant）</label>
-          <textarea id="text" rows="7" class="mt-1 w-full rounded-lg bg-slate-800 border border-slate-700 px-3 py-2" placeholder="输入要合成的文本"></textarea>
+          <textarea id="text" rows="7" class="mt-1.5 w-full rounded-xl bg-slate-800/85 border border-slate-700 px-3 py-2.5 outline-none focus:border-emerald-400 transition" placeholder="输入要合成的文本"></textarea>
         </div>
 
         <div>
           <label class="text-sm text-slate-300">音色描述（user，必填）</label>
-          <textarea id="voiceDesc" rows="4" class="mt-1 w-full rounded-lg bg-slate-800 border border-slate-700 px-3 py-2" placeholder="例如：25岁女声，声线温暖清晰，语速中等，情绪积极。"></textarea>
+          <textarea id="voiceDesc" rows="4" class="mt-1.5 w-full rounded-xl bg-slate-800/85 border border-slate-700 px-3 py-2.5 outline-none focus:border-emerald-400 transition" placeholder="例如：25岁女声，声线温暖清晰，语速中等，情绪积极。"></textarea>
         </div>
 
         <div class="grid sm:grid-cols-2 gap-3">
           <div>
             <label class="text-xs text-slate-400">额外朗读要求（可选）</label>
-            <textarea id="userInstruction" rows="3" class="mt-1 w-full rounded-lg bg-slate-800 border border-slate-700 px-3 py-2" placeholder="例如：前半段轻快，后半段更平缓。"></textarea>
+            <textarea id="userInstruction" rows="3" class="mt-1.5 w-full rounded-xl bg-slate-800/85 border border-slate-700 px-3 py-2.5 outline-none focus:border-emerald-400 transition" placeholder="例如：前半段轻快，后半段更平缓。"></textarea>
           </div>
           <div>
             <label class="text-xs text-slate-400">写法提示</label>
-            <div class="mt-1 rounded-lg border border-slate-700 bg-slate-800 p-3 text-xs text-slate-300 space-y-2">
-              <p>建议 1-4 句，聚焦核心特征（年龄/质感/情绪/语速）。</p>
-              <p>口音可直接写进音色描述，例如“带北方口音的普通话”。</p>
-              <p class="text-amber-300">避免写混响、回声、EQ、压缩等后期处理词。</p>
+            <div class="mt-1.5 rounded-xl border border-slate-700 bg-slate-800/80 p-3 text-xs text-slate-300 space-y-2">
+              <p>建议 1-4 句，聚焦年龄/质感/情绪/语速四个维度。</p>
+              <p>口音可直接写入音色描述，如“带北方口音的普通话”。</p>
+              <p class="text-amber-300">避免混响、回声、EQ、压缩等后期处理词。</p>
             </div>
           </div>
         </div>
 
         <div class="flex items-center gap-3">
-          <select id="format" class="rounded-lg bg-slate-800 border border-slate-700 px-3 py-2">
+          <select id="format" class="rounded-xl bg-slate-800/85 border border-slate-700 px-3 py-2.5">
             <option value="wav">wav</option><option value="mp3">mp3</option><option value="pcm16">pcm16</option>
           </select>
-          <button id="genBtn" onclick="generate()" class="rounded-lg px-4 py-2 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-60">生成音频</button>
+          <button id="genBtn" onclick="generate()" class="rounded-xl px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-60 transition">生成音频</button>
           <span id="msg" class="text-sm text-slate-300"></span>
         </div>
       </div>
 
-      <aside class="rounded-2xl border border-slate-800 bg-slate-900 p-5 space-y-3">
+      <aside class="rounded-3xl border border-white/10 bg-slate-900/70 p-5 sm:p-6 space-y-4 backdrop-blur">
         <h2 class="font-semibold">播放与下载</h2>
         <audio id="player" controls class="w-full"></audio>
-        <button id="downloadBtn" onclick="downloadAudio()" class="w-full rounded-lg px-4 py-2 bg-slate-700 hover:bg-slate-600 disabled:opacity-50" disabled>下载音频</button>
+        <button id="downloadBtn" onclick="downloadAudio()" class="w-full rounded-xl px-4 py-2.5 bg-slate-700 hover:bg-slate-600 disabled:opacity-50 transition" disabled>下载音频</button>
         <p class="text-xs text-slate-400">请先在首页保存 API Key（localStorage: mimo_api_key）。</p>
       </aside>
     </section>
 
-    <section class="rounded-2xl border border-slate-800 bg-slate-900 p-5 space-y-4">
-      <h2 class="font-semibold">如何写好音色描述（voice design prompt）</h2>
-      <p class="text-sm text-slate-300">描述越具体、越生动，生成音色越贴近预期。可按需覆盖多个维度，不必面面俱到。</p>
+    <section class="rounded-3xl border border-white/10 bg-slate-900/70 p-6 space-y-4 backdrop-blur">
+      <h2 class="font-semibold text-lg">如何写好音色描述（voice design prompt）</h2>
+      <p class="text-sm text-slate-300">描述越具体、越生动，生成音色越贴近预期。推荐按“核心维度 + 场景补充”组织。</p>
       <div class="grid md:grid-cols-2 gap-3 text-sm">
-        <div class="rounded-lg border border-slate-700 bg-slate-800 p-3">
+        <div class="rounded-xl border border-slate-700 bg-slate-800/80 p-3">
           <h3 class="font-medium mb-2">关键维度</h3>
           <ul class="space-y-1 text-slate-300">
             <li>• 性别与年龄：young woman in her mid-20s / 五十多岁的中年男性</li>
@@ -76,7 +78,7 @@
             <li>• 语速节奏：slow and deliberate / 语速极快，像连珠炮</li>
           </ul>
         </div>
-        <div class="rounded-lg border border-slate-700 bg-slate-800 p-3">
+        <div class="rounded-xl border border-slate-700 bg-slate-800/80 p-3">
           <h3 class="font-medium mb-2">可选增强维度</h3>
           <ul class="space-y-1 text-slate-300">
             <li>• 角色人设：narrator / podcast host / 深夜电台 DJ</li>
@@ -87,11 +89,11 @@
         </div>
       </div>
       <div class="grid md:grid-cols-2 gap-3 text-sm">
-        <div class="rounded-lg border border-slate-700 bg-slate-800 p-3 space-y-2">
+        <div class="rounded-xl border border-slate-700 bg-slate-800/80 p-3 space-y-2">
           <h3 class="font-medium">示例（简洁）</h3>
           <p class="text-slate-300">Heavy Russian accent, gruff middle-aged male, blunt and matter-of-fact.</p>
         </div>
-        <div class="rounded-lg border border-slate-700 bg-slate-800 p-3 space-y-2">
+        <div class="rounded-xl border border-slate-700 bg-slate-800/80 p-3 space-y-2">
           <h3 class="font-medium">示例（专业）</h3>
           <p class="text-slate-300">一位年迈老先生，说带北方口音的普通话，语速缓慢沉稳，嗓音略带沙哑和沧桑感，像在讲故事。</p>
         </div>

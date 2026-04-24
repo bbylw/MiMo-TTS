@@ -5,36 +5,42 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MiMo TTS · Built-in Voice</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root { color-scheme: dark; }
+    .mesh::before { content: ''; position: fixed; inset: -20% auto auto -10%; width: 40rem; height: 40rem; border-radius: 50%; background: radial-gradient(circle, rgba(99,102,241,.3) 0%, rgba(30,41,59,0) 70%); filter: blur(40px); z-index: -1; pointer-events: none; }
+  </style>
 </head>
-<body class="min-h-screen bg-slate-950 text-slate-100">
-  <main class="max-w-5xl mx-auto px-4 py-8 space-y-5">
-    <nav class="text-sm text-slate-300 flex flex-wrap gap-4">
-      <a href="index.html" class="underline">首页</a>
-      <a href="voicedesign.html" class="underline">VoiceDesign</a>
-      <a href="voiceclone.html" class="underline">VoiceClone</a>
+<body class="mesh min-h-screen bg-slate-950 text-slate-100 antialiased">
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 py-8 space-y-6">
+    <nav class="rounded-2xl border border-white/10 bg-slate-900/70 p-4 text-sm text-slate-300 flex flex-wrap items-center gap-4 backdrop-blur">
+      <a href="index.html" class="hover:text-white">首页</a>
+      <span class="text-slate-600">/</span>
+      <a href="voicedesign.html" class="hover:text-white">VoiceDesign</a>
+      <a href="voiceclone.html" class="hover:text-white">VoiceClone</a>
+      <span class="ml-auto text-xs text-indigo-200 border border-indigo-300/30 rounded-full px-2.5 py-1">Built-in Model</span>
     </nav>
 
-    <header class="rounded-2xl border border-indigo-500/30 bg-gradient-to-br from-slate-900 to-indigo-950 p-6">
-      <h1 class="text-2xl font-bold">mimo-v2.5-tts（内置音色）</h1>
-      <p class="text-sm text-slate-300 mt-2">支持内置音色、自然语言控制与 assistant 标签控制（含唱歌）。</p>
+    <header class="rounded-3xl border border-indigo-400/30 bg-gradient-to-br from-slate-900 to-indigo-950/70 p-7 shadow-2xl shadow-indigo-950/25">
+      <h1 class="text-2xl sm:text-3xl font-bold">mimo-v2.5-tts（内置音色）</h1>
+      <p class="text-sm text-slate-300 mt-3">支持内置音色、自然语言控制与 assistant 标签控制（含唱歌）。界面已升级为创作型工作台，减少操作路径。</p>
     </header>
 
     <section class="grid lg:grid-cols-3 gap-4">
-      <div class="lg:col-span-2 rounded-2xl border border-slate-800 bg-slate-900 p-5 space-y-4">
+      <div class="lg:col-span-2 rounded-3xl border border-white/10 bg-slate-900/70 p-5 sm:p-6 space-y-5 backdrop-blur">
         <div>
           <label class="text-sm text-slate-300">文本（assistant）</label>
-          <textarea id="text" rows="7" class="mt-1 w-full rounded-lg bg-slate-800 border border-slate-700 px-3 py-2" placeholder="输入要合成的文本"></textarea>
+          <textarea id="text" rows="7" class="mt-1.5 w-full rounded-xl bg-slate-800/85 border border-slate-700 px-3 py-2.5 outline-none focus:border-indigo-400 transition" placeholder="输入要合成的文本"></textarea>
         </div>
 
         <div>
           <label class="text-sm text-slate-300">自然语言控制（user，可选）</label>
-          <textarea id="userInstruction" rows="3" class="mt-1 w-full rounded-lg bg-slate-800 border border-slate-700 px-3 py-2" placeholder="例如：语速稍快，情绪明亮积极。"></textarea>
+          <textarea id="userInstruction" rows="3" class="mt-1.5 w-full rounded-xl bg-slate-800/85 border border-slate-700 px-3 py-2.5 outline-none focus:border-indigo-400 transition" placeholder="例如：语速稍快，情绪明亮积极。"></textarea>
         </div>
 
         <div class="grid sm:grid-cols-3 gap-3">
           <div>
             <label class="text-xs text-slate-400">音色</label>
-            <select id="voice" class="mt-1 w-full rounded-lg bg-slate-800 border border-slate-700 px-3 py-2">
+            <select id="voice" class="mt-1.5 w-full rounded-xl bg-slate-800/85 border border-slate-700 px-3 py-2.5">
               <option value="mimo_default">MiMo-默认</option><option value="冰糖">冰糖</option><option value="茉莉">茉莉</option>
               <option value="苏打">苏打</option><option value="白桦">白桦</option><option value="Mia">Mia</option>
               <option value="Chloe">Chloe</option><option value="Milo">Milo</option><option value="Dean">Dean</option>
@@ -42,7 +48,7 @@
           </div>
           <div>
             <label class="text-xs text-slate-400">风格标签</label>
-            <select id="style" class="mt-1 w-full rounded-lg bg-slate-800 border border-slate-700 px-3 py-2">
+            <select id="style" class="mt-1.5 w-full rounded-xl bg-slate-800/85 border border-slate-700 px-3 py-2.5">
               <option value="">默认</option><option value="开心">开心</option><option value="悲伤">悲伤</option>
               <option value="东北话">东北话</option><option value="四川话">四川话</option><option value="河南话">河南话</option>
               <option value="粤语">粤语</option><option value="台湾腔">台湾腔</option><option value="唱歌">唱歌</option>
@@ -50,22 +56,22 @@
           </div>
           <div>
             <label class="text-xs text-slate-400">格式</label>
-            <select id="format" class="mt-1 w-full rounded-lg bg-slate-800 border border-slate-700 px-3 py-2">
+            <select id="format" class="mt-1.5 w-full rounded-xl bg-slate-800/85 border border-slate-700 px-3 py-2.5">
               <option value="wav">wav</option><option value="mp3">mp3</option><option value="pcm16">pcm16</option>
             </select>
           </div>
         </div>
 
         <div class="flex items-center gap-3">
-          <button id="genBtn" onclick="generate()" class="rounded-lg px-4 py-2 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-60">生成音频</button>
+          <button id="genBtn" onclick="generate()" class="rounded-xl px-4 py-2.5 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-60 transition">生成音频</button>
           <span id="msg" class="text-sm text-slate-300"></span>
         </div>
       </div>
 
-      <aside class="rounded-2xl border border-slate-800 bg-slate-900 p-5 space-y-3">
+      <aside class="rounded-3xl border border-white/10 bg-slate-900/70 p-5 sm:p-6 space-y-4 backdrop-blur">
         <h2 class="font-semibold">播放与下载</h2>
         <audio id="player" controls class="w-full"></audio>
-        <button id="downloadBtn" onclick="downloadAudio()" class="w-full rounded-lg px-4 py-2 bg-slate-700 hover:bg-slate-600 disabled:opacity-50" disabled>下载音频</button>
+        <button id="downloadBtn" onclick="downloadAudio()" class="w-full rounded-xl px-4 py-2.5 bg-slate-700 hover:bg-slate-600 disabled:opacity-50 transition" disabled>下载音频</button>
         <p class="text-xs text-slate-400">请先在首页保存 API Key（localStorage: mimo_api_key）。</p>
       </aside>
     </section>

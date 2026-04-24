@@ -5,83 +5,105 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MiMo TTS 控制台</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root { color-scheme: dark; }
+    .aurora::before,
+    .aurora::after {
+      content: '';
+      position: fixed;
+      width: 38rem;
+      height: 38rem;
+      border-radius: 999px;
+      filter: blur(90px);
+      z-index: -1;
+      opacity: .35;
+      pointer-events: none;
+    }
+    .aurora::before { background: #4f46e5; top: -12rem; left: -10rem; }
+    .aurora::after { background: #0ea5e9; right: -14rem; bottom: -12rem; }
+    .glass { backdrop-filter: blur(14px); }
+  </style>
 </head>
-<body class="min-h-screen bg-slate-950 text-slate-100">
-  <div class="max-w-6xl mx-auto px-4 py-8 space-y-6">
-    <header class="rounded-2xl border border-slate-800 bg-gradient-to-br from-slate-900 to-slate-950 p-6">
-      <div class="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
-        <div>
-          <h1 class="text-3xl font-bold tracking-tight">MiMo-V2.5-TTS 控制台</h1>
-          <p class="text-slate-400 mt-2">三个模型三套独立页面，按官方文档拆分，避免参数串扰。</p>
+<body class="aurora min-h-screen bg-slate-950 text-slate-100 antialiased">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-10 space-y-7">
+    <header class="glass rounded-3xl border border-white/10 bg-gradient-to-br from-slate-900/80 to-slate-950/70 p-7 sm:p-8 shadow-2xl shadow-indigo-950/30">
+      <div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+        <div class="space-y-3">
+          <p class="text-xs uppercase tracking-[0.22em] text-indigo-300/90">MiMo Voice Suite</p>
+          <h1 class="text-3xl sm:text-4xl font-bold tracking-tight leading-tight">MiMo-V2.5-TTS 创作中枢</h1>
+          <p class="text-slate-300/90 max-w-2xl">全新工作台 UI：更强信息层级、更顺滑交互与更高视觉完成度。三种模型入口清晰隔离，避免参数串扰，支持快速创作与生产级交付。</p>
         </div>
-        <div id="keyBadge" class="text-sm px-3 py-1.5 rounded-full border border-slate-700 text-slate-300 w-fit">
+        <div id="keyBadge" class="text-sm px-4 py-2 rounded-full border border-slate-600 text-slate-200 w-fit bg-slate-900/70 shadow-lg shadow-black/20">
           API Key 状态检测中...
         </div>
       </div>
     </header>
 
-    <section class="grid lg:grid-cols-3 gap-4">
-      <a href="tts.html" class="group rounded-2xl border border-indigo-500/30 bg-slate-900 p-5 hover:border-indigo-400 hover:bg-slate-900/90 transition">
+    <section class="grid lg:grid-cols-3 gap-4 sm:gap-5">
+      <a href="tts.html" class="group glass rounded-3xl border border-indigo-400/30 bg-slate-900/65 p-6 hover:border-indigo-300 hover:-translate-y-1 transition duration-300 shadow-xl shadow-indigo-950/20">
         <div class="flex items-center justify-between">
           <h2 class="font-semibold text-lg">mimo-v2.5-tts</h2>
-          <span class="text-xs text-indigo-300 border border-indigo-500/40 rounded px-2 py-0.5">Built-in</span>
+          <span class="text-xs text-indigo-200 border border-indigo-300/30 rounded-full px-2.5 py-1">Built-in</span>
         </div>
-        <ul class="text-sm text-slate-400 mt-3 space-y-1 list-disc pl-4">
-          <li>内置音色选择</li>
-          <li>标签控制 + 自然语言控制</li>
+        <p class="text-sm text-slate-300 mt-3">内置音色 + 标签控制 + 自然语言控制，覆盖常规内容生产场景。</p>
+        <ul class="text-sm text-slate-400 mt-4 space-y-1.5 list-disc pl-4">
+          <li>音色选择与风格标签联动</li>
           <li>支持唱歌模式</li>
+          <li>极速生成与下载</li>
         </ul>
-        <div class="mt-4 text-indigo-300 text-sm group-hover:underline">进入页面 →</div>
+        <div class="mt-5 text-indigo-200 text-sm font-medium">进入创作空间 →</div>
       </a>
 
-      <a href="voicedesign.html" class="group rounded-2xl border border-emerald-500/30 bg-slate-900 p-5 hover:border-emerald-400 hover:bg-slate-900/90 transition">
+      <a href="voicedesign.html" class="group glass rounded-3xl border border-emerald-400/30 bg-slate-900/65 p-6 hover:border-emerald-300 hover:-translate-y-1 transition duration-300 shadow-xl shadow-emerald-950/20">
         <div class="flex items-center justify-between">
           <h2 class="font-semibold text-lg">mimo-v2.5-tts-voicedesign</h2>
-          <span class="text-xs text-emerald-300 border border-emerald-500/40 rounded px-2 py-0.5">Design</span>
+          <span class="text-xs text-emerald-200 border border-emerald-300/30 rounded-full px-2.5 py-1">Design</span>
         </div>
-        <ul class="text-sm text-slate-400 mt-3 space-y-1 list-disc pl-4">
-          <li>user 中音色描述必填</li>
-          <li>方言作为 user 指令生效</li>
+        <p class="text-sm text-slate-300 mt-3">通过 Prompt 精准塑造音色人格，适合角色化、品牌化声音设计。</p>
+        <ul class="text-sm text-slate-400 mt-4 space-y-1.5 list-disc pl-4">
+          <li>音色描述必填，风格表达自由</li>
+          <li>方言由 user 指令直接驱动</li>
           <li>不支持内置音色/唱歌</li>
         </ul>
-        <div class="mt-4 text-emerald-300 text-sm group-hover:underline">进入页面 →</div>
+        <div class="mt-5 text-emerald-200 text-sm font-medium">开始声音设计 →</div>
       </a>
 
-      <a href="voiceclone.html" class="group rounded-2xl border border-amber-500/30 bg-slate-900 p-5 hover:border-amber-400 hover:bg-slate-900/90 transition">
+      <a href="voiceclone.html" class="group glass rounded-3xl border border-amber-400/30 bg-slate-900/65 p-6 hover:border-amber-300 hover:-translate-y-1 transition duration-300 shadow-xl shadow-amber-950/20">
         <div class="flex items-center justify-between">
           <h2 class="font-semibold text-lg">mimo-v2.5-tts-voiceclone</h2>
-          <span class="text-xs text-amber-300 border border-amber-500/40 rounded px-2 py-0.5">Clone</span>
+          <span class="text-xs text-amber-200 border border-amber-300/30 rounded-full px-2.5 py-1">Clone</span>
         </div>
-        <ul class="text-sm text-slate-400 mt-3 space-y-1 list-disc pl-4">
-          <li>上传 wav/mp3 样本</li>
-          <li>自动转 Data URL 到 audio.voice</li>
+        <p class="text-sm text-slate-300 mt-3">上传样本后进行音色克隆，适合复现既有音色风格。</p>
+        <ul class="text-sm text-slate-400 mt-4 space-y-1.5 list-disc pl-4">
+          <li>支持 wav/mp3 样本上传</li>
+          <li>自动转 Data URL 写入 audio.voice</li>
           <li>Base64 大小限制 10MB</li>
         </ul>
-        <div class="mt-4 text-amber-300 text-sm group-hover:underline">进入页面 →</div>
+        <div class="mt-5 text-amber-200 text-sm font-medium">进入克隆模式 →</div>
       </a>
     </section>
 
-    <section class="rounded-2xl border border-slate-800 bg-slate-900 p-5 space-y-4">
-      <div class="flex items-center justify-between">
-        <h3 class="text-lg font-semibold">共享 API Key 管理</h3>
-        <a href="https://platform.xiaomimimo.com" target="_blank" class="text-sm text-sky-300 underline">获取 API Key</a>
+    <section class="glass rounded-3xl border border-white/10 bg-slate-900/70 p-6 sm:p-7 space-y-5 shadow-xl shadow-black/25">
+      <div class="flex flex-wrap items-center justify-between gap-2">
+        <h3 class="text-xl font-semibold">共享 API Key 管理</h3>
+        <a href="https://platform.xiaomimimo.com" target="_blank" class="text-sm text-sky-300 hover:text-sky-200 underline underline-offset-4">前往平台获取 Key</a>
       </div>
       <p class="text-sm text-slate-400">三个模型页面共用同一 Key（localStorage: <code>mimo_api_key</code>）。</p>
-      <div class="flex flex-col md:flex-row gap-2">
-        <input id="apiKeyInput" type="password" placeholder="sk-xxxxxxxx" class="flex-1 rounded-lg bg-slate-800 border border-slate-700 px-3 py-2" />
-        <button onclick="saveApiKey()" class="rounded-lg px-4 py-2 bg-indigo-600 hover:bg-indigo-500">保存</button>
-        <button onclick="toggleReveal()" class="rounded-lg px-4 py-2 bg-slate-700 hover:bg-slate-600">显示/隐藏</button>
-        <button onclick="clearApiKey()" class="rounded-lg px-4 py-2 bg-rose-700 hover:bg-rose-600">清除</button>
+      <div class="grid lg:grid-cols-[1fr_auto_auto_auto] gap-2.5">
+        <input id="apiKeyInput" type="password" placeholder="sk-xxxxxxxx" class="w-full rounded-xl bg-slate-800/80 border border-slate-700 px-4 py-2.5 outline-none focus:border-indigo-400 transition" />
+        <button onclick="saveApiKey()" class="rounded-xl px-4 py-2.5 bg-indigo-600 hover:bg-indigo-500 transition">保存</button>
+        <button onclick="toggleReveal()" class="rounded-xl px-4 py-2.5 bg-slate-700 hover:bg-slate-600 transition">显示/隐藏</button>
+        <button onclick="clearApiKey()" class="rounded-xl px-4 py-2.5 bg-rose-700 hover:bg-rose-600 transition">清除</button>
       </div>
       <p id="status" class="text-sm text-slate-300"></p>
     </section>
 
-    <section class="rounded-2xl border border-slate-800 bg-slate-900 p-5">
-      <h3 class="text-lg font-semibold mb-2">快速开始</h3>
-      <ol class="list-decimal pl-5 text-sm text-slate-300 space-y-1">
-        <li>先在本页保存 API Key。</li>
-        <li>按需求进入对应模型页面。</li>
-        <li>根据页面提示填写模型必填项后生成语音。</li>
+    <section class="glass rounded-3xl border border-white/10 bg-slate-900/70 p-6 sm:p-7">
+      <h3 class="text-xl font-semibold mb-3">快速开始</h3>
+      <ol class="grid md:grid-cols-3 gap-3 text-sm text-slate-200">
+        <li class="rounded-2xl border border-slate-700 bg-slate-800/70 p-4">1. 在本页保存 API Key。</li>
+        <li class="rounded-2xl border border-slate-700 bg-slate-800/70 p-4">2. 进入对应模型工作台。</li>
+        <li class="rounded-2xl border border-slate-700 bg-slate-800/70 p-4">3. 按提示填写必填项并生成语音。</li>
       </ol>
     </section>
   </div>
@@ -101,11 +123,11 @@
       if (key) {
         status.textContent = `当前 Key：${maskKey(key)}`;
         badge.textContent = 'API Key 已配置';
-        badge.className = 'text-sm px-3 py-1.5 rounded-full border border-emerald-500/40 text-emerald-300 w-fit';
+        badge.className = 'text-sm px-4 py-2 rounded-full border border-emerald-400/40 text-emerald-200 w-fit bg-emerald-900/20';
       } else {
         status.textContent = '尚未配置 API Key';
         badge.textContent = 'API Key 未配置';
-        badge.className = 'text-sm px-3 py-1.5 rounded-full border border-amber-500/40 text-amber-300 w-fit';
+        badge.className = 'text-sm px-4 py-2 rounded-full border border-amber-400/40 text-amber-200 w-fit bg-amber-900/20';
       }
     }
 
