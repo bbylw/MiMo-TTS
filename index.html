@@ -272,7 +272,7 @@
                         </button>
                         <div class="flex items-center space-x-2 px-3 py-1.5 glass-light rounded-full">
                             <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                            <span class="text-xs text-gray-300">模型: mimo-v2-tts</span>
+                            <span class="text-xs text-gray-300" id="currentModelBadge">模型: mimo-v2.5-tts</span>
                         </div>
                     </div>
                 </div>
@@ -289,7 +289,7 @@
                         </span>
                     </h2>
                     <p class="text-gray-400 max-w-2xl mx-auto">
-                        基于小米米墨MiMo-V2-TTS模型，支持多种音色、格式和风格，让文字拥有生命
+                        基于小米米墨MiMo-V2.5-TTS模型，支持官方内置音色与风格标签控制，让文字拥有生命
                     </p>
                 </div>
                 
@@ -322,8 +322,33 @@
                         
                         <!-- 配置选项 -->
                         <div class="grid sm:grid-cols-2 gap-6">
+                            <!-- 模型选择 -->
+                            <div class="glass rounded-2xl p-6 glow-border fade-in sm:col-span-2" style="animation-delay: 0.15s;">
+                                <label class="text-sm font-medium text-gray-300 flex items-center mb-4">
+                                    <svg class="w-4 h-4 mr-2 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 3v11.25M9.75 3A2.25 2.25 0 007.5 5.25m2.25-2.25A2.25 2.25 0 0112 5.25m-2.25 9h6m-6 0a2.25 2.25 0 00-2.25 2.25M9.75 14.25A2.25 2.25 0 0112 16.5m0 0a2.25 2.25 0 002.25 2.25M12 16.5a2.25 2.25 0 012.25-2.25m0 0V5.25M14.25 3A2.25 2.25 0 0116.5 5.25m-2.25-2.25A2.25 2.25 0 0012 5.25"></path>
+                                    </svg>
+                                    模型选择
+                                </label>
+                                <div class="grid sm:grid-cols-3 gap-3">
+                                    <div class="select-option p-3 rounded-xl selected" data-model="mimo-v2.5-tts" onclick="selectModel(this)">
+                                        <div class="font-medium text-white">mimo-v2.5-tts</div>
+                                        <div class="text-xs text-gray-400 mt-1">官方内置音色</div>
+                                    </div>
+                                    <div class="select-option p-3 rounded-xl" data-model="mimo-v2.5-tts-voicedesign" onclick="selectModel(this)">
+                                        <div class="font-medium text-white">mimo-v2.5-tts-voicedesign</div>
+                                        <div class="text-xs text-gray-400 mt-1">文本描述设计音色</div>
+                                    </div>
+                                    <div class="select-option p-3 rounded-xl" data-model="mimo-v2.5-tts-voiceclone" onclick="selectModel(this)">
+                                        <div class="font-medium text-white">mimo-v2.5-tts-voiceclone</div>
+                                        <div class="text-xs text-gray-400 mt-1">上传样本克隆音色</div>
+                                    </div>
+                                </div>
+                                <p class="text-xs text-gray-400 mt-4" id="modelTips">当前模型支持内置音色与标签风格控制。</p>
+                            </div>
+
                             <!-- 音色选择 -->
-                            <div class="glass rounded-2xl p-6 glow-border fade-in" style="animation-delay: 0.2s;">
+                            <div class="glass rounded-2xl p-6 glow-border fade-in" style="animation-delay: 0.2s;" id="voiceSelectCard">
                                 <label class="text-sm font-medium text-gray-300 flex items-center mb-4">
                                     <svg class="w-4 h-4 mr-2 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
@@ -340,11 +365,11 @@
                                             </div>
                                             <div>
                                                 <div class="font-medium text-white">MiMo-默认</div>
-                                                <div class="text-xs text-gray-400">默认音色</div>
+                                                <div class="text-xs text-gray-400">集群默认（中国站=冰糖，其他站=Mia）</div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="select-option p-3 rounded-xl" data-voice="default_zh" onclick="selectVoice(this)">
+                                    <div class="select-option p-3 rounded-xl" data-voice="冰糖" onclick="selectVoice(this)">
                                         <div class="flex items-center">
                                             <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-pink-500 to-rose-600 flex items-center justify-center mr-3">
                                                 <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -352,12 +377,12 @@
                                                 </svg>
                                             </div>
                                             <div>
-                                                <div class="font-medium text-white">MiMo-中文女声</div>
-                                                <div class="text-xs text-gray-400">中文女声</div>
+                                                <div class="font-medium text-white">冰糖</div>
+                                                <div class="text-xs text-gray-400">中文 · 女声</div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="select-option p-3 rounded-xl" data-voice="default_en" onclick="selectVoice(this)">
+                                    <div class="select-option p-3 rounded-xl" data-voice="茉莉" onclick="selectVoice(this)">
                                         <div class="flex items-center">
                                             <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center mr-3">
                                                 <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -365,8 +390,86 @@
                                                 </svg>
                                             </div>
                                             <div>
-                                                <div class="font-medium text-white">MiMo-英文女声</div>
-                                                <div class="text-xs text-gray-400">英文女声</div>
+                                                <div class="font-medium text-white">茉莉</div>
+                                                <div class="text-xs text-gray-400">中文 · 女声</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="select-option p-3 rounded-xl" data-voice="Mia" onclick="selectVoice(this)">
+                                        <div class="flex items-center">
+                                            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center mr-3">
+                                                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.636 18.364a9 9 0 010-12.728m12.728 0a9 9 0 010 12.728m-9.9-2.829a5 5 0 010-7.07m7.072 0a5 5 0 010 7.07M13 12a1 1 0 11-2 0 1 1 0 012 0z"></path>
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <div class="font-medium text-white">Mia</div>
+                                                <div class="text-xs text-gray-400">英文 · 女声</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="select-option p-3 rounded-xl" data-voice="Milo" onclick="selectVoice(this)">
+                                        <div class="flex items-center">
+                                            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center mr-3">
+                                                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.636 18.364a9 9 0 010-12.728m12.728 0a9 9 0 010 12.728m-9.9-2.829a5 5 0 010-7.07m7.072 0a5 5 0 010 7.07M13 12a1 1 0 11-2 0 1 1 0 012 0z"></path>
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <div class="font-medium text-white">Milo</div>
+                                                <div class="text-xs text-gray-400">英文 · 男声</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="select-option p-3 rounded-xl" data-voice="苏打" onclick="selectVoice(this)">
+                                        <div class="flex items-center">
+                                            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-yellow-500 to-orange-600 flex items-center justify-center mr-3">
+                                                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.636 18.364a9 9 0 010-12.728m12.728 0a9 9 0 010 12.728m-9.9-2.829a5 5 0 010-7.07m7.072 0a5 5 0 010 7.07M13 12a1 1 0 11-2 0 1 1 0 012 0z"></path>
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <div class="font-medium text-white">苏打</div>
+                                                <div class="text-xs text-gray-400">中文 · 男声</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="select-option p-3 rounded-xl" data-voice="白桦" onclick="selectVoice(this)">
+                                        <div class="flex items-center">
+                                            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500 to-lime-600 flex items-center justify-center mr-3">
+                                                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.636 18.364a9 9 0 010-12.728m12.728 0a9 9 0 010 12.728m-9.9-2.829a5 5 0 010-7.07m7.072 0a5 5 0 010 7.07M13 12a1 1 0 11-2 0 1 1 0 012 0z"></path>
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <div class="font-medium text-white">白桦</div>
+                                                <div class="text-xs text-gray-400">中文 · 男声</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="select-option p-3 rounded-xl" data-voice="Chloe" onclick="selectVoice(this)">
+                                        <div class="flex items-center">
+                                            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-pink-500 to-fuchsia-600 flex items-center justify-center mr-3">
+                                                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.636 18.364a9 9 0 010-12.728m12.728 0a9 9 0 010 12.728m-9.9-2.829a5 5 0 010-7.07m7.072 0a5 5 0 010 7.07M13 12a1 1 0 11-2 0 1 1 0 012 0z"></path>
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <div class="font-medium text-white">Chloe</div>
+                                                <div class="text-xs text-gray-400">英文 · 女声</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="select-option p-3 rounded-xl" data-voice="Dean" onclick="selectVoice(this)">
+                                        <div class="flex items-center">
+                                            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center mr-3">
+                                                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.636 18.364a9 9 0 010-12.728m12.728 0a9 9 0 010 12.728m-9.9-2.829a5 5 0 010-7.07m7.072 0a5 5 0 010 7.07M13 12a1 1 0 11-2 0 1 1 0 012 0z"></path>
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <div class="font-medium text-white">Dean</div>
+                                                <div class="text-xs text-gray-400">英文 · 男声</div>
                                             </div>
                                         </div>
                                     </div>
@@ -409,19 +512,44 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="select-option p-3 rounded-xl" data-format="pcm" onclick="selectFormat(this)">
+                                    <div class="select-option p-3 rounded-xl" data-format="pcm16" onclick="selectFormat(this)">
                                         <div class="flex items-center justify-between">
                                             <div class="flex items-center">
                                                 <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center mr-3">
                                                     <span class="text-white font-bold text-xs">P</span>
                                                 </div>
                                                 <div>
-                                                    <div class="font-medium text-white">PCM</div>
-                                                    <div class="text-xs text-gray-400">原始音频数据</div>
+                                                    <div class="font-medium text-white">PCM16</div>
+                                                    <div class="text-xs text-gray-400">原始 16-bit 音频</div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 模型附加参数 -->
+                        <div class="glass rounded-2xl p-6 glow-border fade-in" style="animation-delay: 0.35s;">
+                            <label class="text-sm font-medium text-gray-300 flex items-center mb-4">
+                                <svg class="w-4 h-4 mr-2 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.25 6.75h-4.5m4.5 4.5h-4.5m4.5 4.5h-4.5m6-9h4.5m-4.5 4.5h4.5m-4.5 4.5h4.5M3 5.25A2.25 2.25 0 015.25 3h13.5A2.25 2.25 0 0121 5.25v13.5A2.25 2.25 0 0118.75 21H5.25A2.25 2.25 0 013 18.75V5.25z"></path>
+                                </svg>
+                                模型附加参数
+                            </label>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-xs text-gray-400 mb-2">自然语言控制（user，可选）</label>
+                                    <textarea id="userInstruction" class="w-full h-20 p-3 input-glass rounded-xl text-white placeholder-gray-500 resize-none" placeholder="例如：请用轻快积极的语气，语速稍快。"></textarea>
+                                </div>
+                                <div id="voiceDesignWrap" class="hidden">
+                                    <label class="block text-xs text-gray-400 mb-2">音色描述（voicedesign 必填）</label>
+                                    <textarea id="voiceDesignDesc" class="w-full h-24 p-3 input-glass rounded-xl text-white placeholder-gray-500 resize-none" placeholder="请详细描述目标声音的人设、年龄、语气、情绪、发音习惯。"></textarea>
+                                </div>
+                                <div id="voiceCloneWrap" class="hidden">
+                                    <label class="block text-xs text-gray-400 mb-2">音色样本（voiceclone 必填，wav/mp3）</label>
+                                    <input id="voiceCloneFile" type="file" accept=".wav,.mp3,audio/wav,audio/mpeg" class="w-full p-3 input-glass rounded-xl text-sm text-gray-200" />
+                                    <p class="text-xs text-gray-500 mt-2">文档要求 Base64 字符串不超过 10MB。</p>
                                 </div>
                             </div>
                         </div>
@@ -487,6 +615,10 @@
                                     <div class="text-sm font-medium text-white">🌸 林黛玉</div>
                                     <div class="text-xs text-gray-400 mt-1">模仿林黛玉</div>
                                 </div>
+                                <div class="select-option p-3 rounded-xl text-center" data-style="唱歌" onclick="selectStyle(this)">
+                                    <div class="text-sm font-medium text-white">🎤 唱歌</div>
+                                    <div class="text-xs text-gray-400 mt-1">歌唱模式</div>
+                                </div>
                             </div>
                         </div>
                         
@@ -518,7 +650,7 @@
                             <div class="space-y-3">
                                 <div class="flex justify-between items-center">
                                     <span class="text-gray-400">模型</span>
-                                    <span class="text-white font-medium">mimo-v2-tts</span>
+                                    <span class="text-white font-medium" id="currentModel">mimo-v2.5-tts</span>
                                 </div>
                                 <div class="flex justify-between items-center">
                                     <span class="text-gray-400">音色</span>
@@ -625,11 +757,11 @@
                 <div class="flex flex-col sm:flex-row items-center justify-between text-sm text-gray-500">
                     <div class="flex items-center space-x-2 mb-2 sm:mb-0">
                         <span>Powered by</span>
-                        <span class="font-medium text-gray-400">小米米墨 MiMo-V2-TTS</span>
+                        <span class="font-medium text-gray-400">小米米墨 MiMo-V2.5-TTS</span>
                     </div>
                     <div class="flex items-center space-x-4">
                         <a href="https://platform.xiaomimimo.com" target="_blank" class="hover:text-gray-300 transition-colors">平台文档</a>
-                        <a href="https://platform.xiaomimimo.com/#/docs/usage-guide/speech-synthesis" target="_blank" class="hover:text-gray-300 transition-colors">TTS文档</a>
+                        <a href="https://platform.xiaomimimo.com/docs/usage-guide/speech-synthesis-v2.5" target="_blank" class="hover:text-gray-300 transition-colors">TTS 文档 v2.5</a>
                     </div>
                 </div>
             </div>
@@ -647,9 +779,29 @@
     <script>
         // 配置
         const API_URL = 'https://api.xiaomimimo.com/v1/chat/completions';
-        const MODEL = 'mimo-v2-tts';
+        const MODELS = {
+            'mimo-v2.5-tts': {
+                supportsBuiltinVoice: true,
+                requiresVoiceDesign: false,
+                requiresVoiceClone: false,
+                tip: '当前模型支持内置音色与标签风格控制。'
+            },
+            'mimo-v2.5-tts-voicedesign': {
+                supportsBuiltinVoice: false,
+                requiresVoiceDesign: true,
+                requiresVoiceClone: false,
+                tip: '该模型不使用内置音色，必须填写“音色描述（user）”。'
+            },
+            'mimo-v2.5-tts-voiceclone': {
+                supportsBuiltinVoice: false,
+                requiresVoiceDesign: false,
+                requiresVoiceClone: true,
+                tip: '该模型不使用内置音色，必须上传 wav/mp3 音色样本。'
+            }
+        };
         
         // 状态
+        let currentModel = 'mimo-v2.5-tts';
         let currentVoice = 'mimo_default';
         let currentFormat = 'wav';
         let currentStyle = '';
@@ -670,6 +822,13 @@
         const toastIcon = document.getElementById('toastIcon');
         const toastMessage = document.getElementById('toastMessage');
         const apiKeyModal = document.getElementById('apiKeyModal');
+        const modelTips = document.getElementById('modelTips');
+        const voiceSelectCard = document.getElementById('voiceSelectCard');
+        const userInstruction = document.getElementById('userInstruction');
+        const voiceDesignWrap = document.getElementById('voiceDesignWrap');
+        const voiceDesignDesc = document.getElementById('voiceDesignDesc');
+        const voiceCloneWrap = document.getElementById('voiceCloneWrap');
+        const voiceCloneFile = document.getElementById('voiceCloneFile');
         
         // 初始化
         function init() {
@@ -702,6 +861,8 @@
                 `;
                 document.getElementById('playText').textContent = '播放';
             });
+
+            updateModelUI();
         }
         
         // 保存 API Key
@@ -730,6 +891,26 @@
         // 获取 API Key
         function getApiKey() {
             return localStorage.getItem('mimo_api_key');
+        }
+
+        // 选择模型
+        function selectModel(el) {
+            document.querySelectorAll('[data-model]').forEach(e => e.classList.remove('selected'));
+            el.classList.add('selected');
+            currentModel = el.dataset.model;
+            updateModelUI();
+            updateCurrentConfig();
+        }
+
+        function updateModelUI() {
+            const modelConfig = MODELS[currentModel];
+            document.getElementById('currentModel').textContent = currentModel;
+            document.getElementById('currentModelBadge').textContent = `模型: ${currentModel}`;
+            modelTips.textContent = modelConfig.tip;
+
+            voiceSelectCard.classList.toggle('hidden', !modelConfig.supportsBuiltinVoice);
+            voiceDesignWrap.classList.toggle('hidden', !modelConfig.requiresVoiceDesign);
+            voiceCloneWrap.classList.toggle('hidden', !modelConfig.requiresVoiceClone);
         }
         
         // 选择音色
@@ -760,19 +941,34 @@
         function updateCurrentConfig() {
             const voiceNames = {
                 'mimo_default': 'MiMo-默认',
-                'default_zh': 'MiMo-中文女声',
-                'default_en': 'MiMo-英文女声'
+                '冰糖': '冰糖',
+                '茉莉': '茉莉',
+                'Mia': 'Mia',
+                'Milo': 'Milo',
+                '苏打': '苏打',
+                '白桦': '白桦',
+                'Chloe': 'Chloe',
+                'Dean': 'Dean'
             };
             
             const formatNames = {
                 'wav': 'WAV',
                 'mp3': 'MP3',
-                'pcm': 'PCM'
+                'pcm16': 'PCM16'
             };
             
-            document.getElementById('currentVoice').textContent = voiceNames[currentVoice];
+            document.getElementById('currentVoice').textContent = MODELS[currentModel].supportsBuiltinVoice ? voiceNames[currentVoice] : 'N/A';
             document.getElementById('currentFormat').textContent = formatNames[currentFormat];
             document.getElementById('currentStyle').textContent = currentStyle || '默认';
+        }
+
+        async function readFileAsDataUrl(file) {
+            return await new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = () => reject(new Error('样本文件读取失败'));
+                reader.readAsDataURL(file);
+            });
         }
         
         // 显示 Toast 通知
@@ -820,30 +1016,68 @@
             generateBtn.disabled = true;
             
             try {
+                const modelConfig = MODELS[currentModel];
+                if (currentStyle === '唱歌' && currentModel !== 'mimo-v2.5-tts') {
+                    throw new Error('“唱歌”标签仅适用于 mimo-v2.5-tts 模型。');
+                }
+
+                if (modelConfig.requiresVoiceDesign && !voiceDesignDesc.value.trim()) {
+                    throw new Error('请填写 voice design 模型所需的音色描述。');
+                }
+
+                let voiceCloneDataUrl = null;
+                if (modelConfig.requiresVoiceClone) {
+                    const file = voiceCloneFile.files[0];
+                    if (!file) {
+                        throw new Error('请上传 voice clone 音色样本文件（wav/mp3）。');
+                    }
+                    const isSupported = ['audio/mpeg', 'audio/mp3', 'audio/wav', 'audio/x-wav'].includes(file.type) ||
+                        /\.(mp3|wav)$/i.test(file.name);
+                    if (!isSupported) {
+                        throw new Error('样本文件仅支持 wav/mp3。');
+                    }
+                    voiceCloneDataUrl = await readFileAsDataUrl(file);
+                    const base64Data = voiceCloneDataUrl.split(',')[1] || '';
+                    if (base64Data.length > 10 * 1024 * 1024) {
+                        throw new Error('样本文件 Base64 编码后超过 10MB，请更换更短音频。');
+                    }
+                }
+
+                const userContent = modelConfig.requiresVoiceDesign
+                    ? voiceDesignDesc.value.trim()
+                    : (userInstruction.value.trim() || '请用自然流畅的语音朗读以下内容');
+
                 const messages = [
                     {
                         role: 'user',
-                        content: '请用自然流畅的语音朗读以下内容'
+                        content: userContent
                     },
                     {
                         role: 'assistant',
-                        content: currentStyle ? `<style>${currentStyle}</style>${text}` : text
+                        content: currentStyle ? `(${currentStyle})${text}` : text
                     }
                 ];
+
+                const audioPayload = {
+                    format: currentFormat
+                };
+                if (modelConfig.supportsBuiltinVoice) {
+                    audioPayload.voice = currentVoice;
+                }
+                if (modelConfig.requiresVoiceClone) {
+                    audioPayload.voice = voiceCloneDataUrl;
+                }
                 
                 const response = await fetch(API_URL, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${getApiKey()}`
+                        'api-key': getApiKey()
                     },
                     body: JSON.stringify({
-                        model: MODEL,
+                        model: currentModel,
                         messages: messages,
-                        audio: {
-                            format: currentFormat,
-                            voice: currentVoice
-                        }
+                        audio: audioPayload
                     })
                 });
                 
@@ -857,7 +1091,7 @@
                 
                 // 转换为 Blob
                 const mimeType = currentFormat === 'mp3' ? 'audio/mpeg' : 
-                                currentFormat === 'pcm' ? 'audio/pcm' : 'audio/wav';
+                                currentFormat === 'pcm16' ? 'audio/L16' : 'audio/wav';
                 currentAudioBlob = base64ToBlob(audioData, mimeType);
                 
                 // 设置播放器
@@ -872,6 +1106,7 @@
                 addToHistory({
                     text: text.substring(0, 50) + (text.length > 50 ? '...' : ''),
                     voice: currentVoice,
+                    model: currentModel,
                     format: currentFormat,
                     style: currentStyle,
                     blob: currentAudioBlob,
@@ -931,7 +1166,7 @@
             if (!currentAudioBlob) return;
             
             const extension = currentFormat === 'mp3' ? 'mp3' : 
-                            currentFormat === 'pcm' ? 'pcm' : 'wav';
+                            currentFormat === 'pcm16' ? 'pcm' : 'wav';
             const filename = `mimo_tts_${Date.now()}.${extension}`;
             
             const url = URL.createObjectURL(currentAudioBlob);
@@ -966,7 +1201,7 @@
                         <div class="flex-1 min-w-0">
                             <div class="text-sm text-white truncate">${item.text}</div>
                             <div class="text-xs text-gray-400 mt-1">
-                                ${item.style || '默认'} · ${item.format.toUpperCase()} · ${item.time}
+                                ${item.model} · ${item.style || '默认'} · ${item.format.toUpperCase()} · ${item.time}
                             </div>
                         </div>
                         <button onclick="event.stopPropagation(); downloadHistory(${index})" class="ml-2 p-1 hover:bg-white/10 rounded">
@@ -995,7 +1230,7 @@
         function downloadHistory(index) {
             const item = history[index];
             const extension = item.format === 'mp3' ? 'mp3' : 
-                            item.format === 'pcm' ? 'pcm' : 'wav';
+                            item.format === 'pcm16' ? 'pcm' : 'wav';
             const filename = `mimo_tts_${Date.now()}.${extension}`;
             
             const url = URL.createObjectURL(item.blob);
