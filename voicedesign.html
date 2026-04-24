@@ -16,7 +16,7 @@
 
     <header class="rounded-2xl border border-emerald-500/30 bg-gradient-to-br from-slate-900 to-emerald-950 p-6">
       <h1 class="text-2xl font-bold">mimo-v2.5-tts-voicedesign</h1>
-      <p class="text-sm text-slate-300 mt-2">user 音色描述必填。方言/风格建议写入 user 指令，不支持内置音色与唱歌。</p>
+      <p class="text-sm text-slate-300 mt-2">该模型仅使用 user 消息中的音色描述（voice design prompt）来塑造声音；不提供单独方言设置，不支持内置音色与唱歌。</p>
     </header>
 
     <section class="grid lg:grid-cols-3 gap-4">
@@ -37,13 +37,12 @@
             <textarea id="userInstruction" rows="3" class="mt-1 w-full rounded-lg bg-slate-800 border border-slate-700 px-3 py-2" placeholder="例如：前半段轻快，后半段更平缓。"></textarea>
           </div>
           <div>
-            <label class="text-xs text-slate-400">方言/口音（可选）</label>
-            <select id="dialect" class="mt-1 w-full rounded-lg bg-slate-800 border border-slate-700 px-3 py-2">
-              <option value="">不指定</option>
-              <option value="东北话">东北话</option><option value="四川话">四川话</option>
-              <option value="河南话">河南话</option><option value="粤语">粤语</option><option value="台湾腔">台湾腔</option>
-            </select>
-            <p class="text-xs text-amber-300 mt-2">将作为 user 指令生效。</p>
+            <label class="text-xs text-slate-400">写法提示</label>
+            <div class="mt-1 rounded-lg border border-slate-700 bg-slate-800 p-3 text-xs text-slate-300 space-y-2">
+              <p>建议 1-4 句，聚焦核心特征（年龄/质感/情绪/语速）。</p>
+              <p>口音可直接写进音色描述，例如“带北方口音的普通话”。</p>
+              <p class="text-amber-300">避免写混响、回声、EQ、压缩等后期处理词。</p>
+            </div>
           </div>
         </div>
 
@@ -62,6 +61,46 @@
         <button id="downloadBtn" onclick="downloadAudio()" class="w-full rounded-lg px-4 py-2 bg-slate-700 hover:bg-slate-600 disabled:opacity-50" disabled>下载音频</button>
         <p class="text-xs text-slate-400">请先在首页保存 API Key（localStorage: mimo_api_key）。</p>
       </aside>
+    </section>
+
+    <section class="rounded-2xl border border-slate-800 bg-slate-900 p-5 space-y-4">
+      <h2 class="font-semibold">如何写好音色描述（voice design prompt）</h2>
+      <p class="text-sm text-slate-300">描述越具体、越生动，生成音色越贴近预期。可按需覆盖多个维度，不必面面俱到。</p>
+      <div class="grid md:grid-cols-2 gap-3 text-sm">
+        <div class="rounded-lg border border-slate-700 bg-slate-800 p-3">
+          <h3 class="font-medium mb-2">关键维度</h3>
+          <ul class="space-y-1 text-slate-300">
+            <li>• 性别与年龄：young woman in her mid-20s / 五十多岁的中年男性</li>
+            <li>• 音色质感：deep and gravelly / 丝滑醇厚、带着磁性</li>
+            <li>• 情绪语气：warm and confident / 温柔但带一丝疲惫</li>
+            <li>• 语速节奏：slow and deliberate / 语速极快，像连珠炮</li>
+          </ul>
+        </div>
+        <div class="rounded-lg border border-slate-700 bg-slate-800 p-3">
+          <h3 class="font-medium mb-2">可选增强维度</h3>
+          <ul class="space-y-1 text-slate-300">
+            <li>• 角色人设：narrator / podcast host / 深夜电台 DJ</li>
+            <li>• 说话风格：casual and colloquial / 一本正经地</li>
+            <li>• 场景描写：nature documentary / 给投资人路演</li>
+            <li>• 年代参照：1940s film noir / 八十年代译制片配音</li>
+          </ul>
+        </div>
+      </div>
+      <div class="grid md:grid-cols-2 gap-3 text-sm">
+        <div class="rounded-lg border border-slate-700 bg-slate-800 p-3 space-y-2">
+          <h3 class="font-medium">示例（简洁）</h3>
+          <p class="text-slate-300">Heavy Russian accent, gruff middle-aged male, blunt and matter-of-fact.</p>
+        </div>
+        <div class="rounded-lg border border-slate-700 bg-slate-800 p-3 space-y-2">
+          <h3 class="font-medium">示例（专业）</h3>
+          <p class="text-slate-300">一位年迈老先生，说带北方口音的普通话，语速缓慢沉稳，嗓音略带沙哑和沧桑感，像在讲故事。</p>
+        </div>
+      </div>
+      <ul class="text-xs text-slate-400 space-y-1">
+        <li>• 避免冲突描述：如“稚嫩童声 + CEO 气场”。</li>
+        <li>• 避免模糊词：如“普通的、正常的、外国的”。</li>
+        <li>• assistant 的合成文本应匹配音色设定，效果更好。</li>
+      </ul>
     </section>
   </main>
 
@@ -112,7 +151,6 @@ async function generate() {
   const text = document.getElementById('text').value.trim();
   const voiceDesc = document.getElementById('voiceDesc').value.trim();
   const instruction = document.getElementById('userInstruction').value.trim();
-  const dialect = document.getElementById('dialect').value;
   const format = document.getElementById('format').value;
   const key = getApiKey();
 
@@ -125,7 +163,6 @@ async function generate() {
 
     const userParts = [`音色描述：${voiceDesc}`];
     if (instruction) userParts.push(`朗读要求：${instruction}`);
-    if (dialect) userParts.push(`请使用${dialect}风格/口音进行朗读。`);
 
     const payload = {
       model: MODEL,
