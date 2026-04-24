@@ -272,7 +272,7 @@
                         </button>
                         <div class="flex items-center space-x-2 px-3 py-1.5 glass-light rounded-full">
                             <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                            <span class="text-xs text-gray-300">模型: mimo-v2-tts</span>
+                            <span class="text-xs text-gray-300">模型: mimo-v2.5-tts</span>
                         </div>
                     </div>
                 </div>
@@ -289,7 +289,7 @@
                         </span>
                     </h2>
                     <p class="text-gray-400 max-w-2xl mx-auto">
-                        基于小米米墨MiMo-V2-TTS模型，支持多种音色、格式和风格，让文字拥有生命
+                        基于小米米墨MiMo-V2.5-TTS模型，支持官方内置音色与风格标签控制，让文字拥有生命
                     </p>
                 </div>
                 
@@ -344,7 +344,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="select-option p-3 rounded-xl" data-voice="default_zh" onclick="selectVoice(this)">
+                                    <div class="select-option p-3 rounded-xl" data-voice="冰糖" onclick="selectVoice(this)">
                                         <div class="flex items-center">
                                             <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-pink-500 to-rose-600 flex items-center justify-center mr-3">
                                                 <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -352,12 +352,12 @@
                                                 </svg>
                                             </div>
                                             <div>
-                                                <div class="font-medium text-white">MiMo-中文女声</div>
-                                                <div class="text-xs text-gray-400">中文女声</div>
+                                                <div class="font-medium text-white">冰糖</div>
+                                                <div class="text-xs text-gray-400">中文 · 女声</div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="select-option p-3 rounded-xl" data-voice="default_en" onclick="selectVoice(this)">
+                                    <div class="select-option p-3 rounded-xl" data-voice="茉莉" onclick="selectVoice(this)">
                                         <div class="flex items-center">
                                             <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center mr-3">
                                                 <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -365,8 +365,34 @@
                                                 </svg>
                                             </div>
                                             <div>
-                                                <div class="font-medium text-white">MiMo-英文女声</div>
-                                                <div class="text-xs text-gray-400">英文女声</div>
+                                                <div class="font-medium text-white">茉莉</div>
+                                                <div class="text-xs text-gray-400">中文 · 女声</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="select-option p-3 rounded-xl" data-voice="Mia" onclick="selectVoice(this)">
+                                        <div class="flex items-center">
+                                            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center mr-3">
+                                                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.636 18.364a9 9 0 010-12.728m12.728 0a9 9 0 010 12.728m-9.9-2.829a5 5 0 010-7.07m7.072 0a5 5 0 010 7.07M13 12a1 1 0 11-2 0 1 1 0 012 0z"></path>
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <div class="font-medium text-white">Mia</div>
+                                                <div class="text-xs text-gray-400">英文 · 女声</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="select-option p-3 rounded-xl" data-voice="Milo" onclick="selectVoice(this)">
+                                        <div class="flex items-center">
+                                            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center mr-3">
+                                                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.636 18.364a9 9 0 010-12.728m12.728 0a9 9 0 010 12.728m-9.9-2.829a5 5 0 010-7.07m7.072 0a5 5 0 010 7.07M13 12a1 1 0 11-2 0 1 1 0 012 0z"></path>
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <div class="font-medium text-white">Milo</div>
+                                                <div class="text-xs text-gray-400">英文 · 男声</div>
                                             </div>
                                         </div>
                                     </div>
@@ -409,15 +435,15 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="select-option p-3 rounded-xl" data-format="pcm" onclick="selectFormat(this)">
+                                    <div class="select-option p-3 rounded-xl" data-format="pcm16" onclick="selectFormat(this)">
                                         <div class="flex items-center justify-between">
                                             <div class="flex items-center">
                                                 <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center mr-3">
                                                     <span class="text-white font-bold text-xs">P</span>
                                                 </div>
                                                 <div>
-                                                    <div class="font-medium text-white">PCM</div>
-                                                    <div class="text-xs text-gray-400">原始音频数据</div>
+                                                    <div class="font-medium text-white">PCM16</div>
+                                                    <div class="text-xs text-gray-400">原始 16-bit 音频</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -487,6 +513,10 @@
                                     <div class="text-sm font-medium text-white">🌸 林黛玉</div>
                                     <div class="text-xs text-gray-400 mt-1">模仿林黛玉</div>
                                 </div>
+                                <div class="select-option p-3 rounded-xl text-center" data-style="唱歌" onclick="selectStyle(this)">
+                                    <div class="text-sm font-medium text-white">🎤 唱歌</div>
+                                    <div class="text-xs text-gray-400 mt-1">歌唱模式</div>
+                                </div>
                             </div>
                         </div>
                         
@@ -518,7 +548,7 @@
                             <div class="space-y-3">
                                 <div class="flex justify-between items-center">
                                     <span class="text-gray-400">模型</span>
-                                    <span class="text-white font-medium">mimo-v2-tts</span>
+                                    <span class="text-white font-medium">mimo-v2.5-tts</span>
                                 </div>
                                 <div class="flex justify-between items-center">
                                     <span class="text-gray-400">音色</span>
@@ -625,11 +655,11 @@
                 <div class="flex flex-col sm:flex-row items-center justify-between text-sm text-gray-500">
                     <div class="flex items-center space-x-2 mb-2 sm:mb-0">
                         <span>Powered by</span>
-                        <span class="font-medium text-gray-400">小米米墨 MiMo-V2-TTS</span>
+                        <span class="font-medium text-gray-400">小米米墨 MiMo-V2.5-TTS</span>
                     </div>
                     <div class="flex items-center space-x-4">
                         <a href="https://platform.xiaomimimo.com" target="_blank" class="hover:text-gray-300 transition-colors">平台文档</a>
-                        <a href="https://platform.xiaomimimo.com/#/docs/usage-guide/speech-synthesis" target="_blank" class="hover:text-gray-300 transition-colors">TTS文档</a>
+                        <a href="https://platform.xiaomimimo.com/docs/usage-guide/speech-synthesis-v2.5" target="_blank" class="hover:text-gray-300 transition-colors">TTS 文档 v2.5</a>
                     </div>
                 </div>
             </div>
@@ -647,7 +677,7 @@
     <script>
         // 配置
         const API_URL = 'https://api.xiaomimimo.com/v1/chat/completions';
-        const MODEL = 'mimo-v2-tts';
+        const MODEL = 'mimo-v2.5-tts';
         
         // 状态
         let currentVoice = 'mimo_default';
@@ -760,14 +790,16 @@
         function updateCurrentConfig() {
             const voiceNames = {
                 'mimo_default': 'MiMo-默认',
-                'default_zh': 'MiMo-中文女声',
-                'default_en': 'MiMo-英文女声'
+                '冰糖': '冰糖',
+                '茉莉': '茉莉',
+                'Mia': 'Mia',
+                'Milo': 'Milo'
             };
             
             const formatNames = {
                 'wav': 'WAV',
                 'mp3': 'MP3',
-                'pcm': 'PCM'
+                'pcm16': 'PCM16'
             };
             
             document.getElementById('currentVoice').textContent = voiceNames[currentVoice];
@@ -823,11 +855,11 @@
                 const messages = [
                     {
                         role: 'user',
-                        content: '请用自然流畅的语音朗读以下内容'
+                        content: currentStyle ? `请使用“${currentStyle}”风格进行语音合成，保持自然表达。` : '请用自然流畅的语音朗读以下内容'
                     },
                     {
                         role: 'assistant',
-                        content: currentStyle ? `<style>${currentStyle}</style>${text}` : text
+                        content: currentStyle ? `(${currentStyle})${text}` : text
                     }
                 ];
                 
@@ -835,7 +867,7 @@
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${getApiKey()}`
+                        'api-key': getApiKey()
                     },
                     body: JSON.stringify({
                         model: MODEL,
@@ -857,7 +889,7 @@
                 
                 // 转换为 Blob
                 const mimeType = currentFormat === 'mp3' ? 'audio/mpeg' : 
-                                currentFormat === 'pcm' ? 'audio/pcm' : 'audio/wav';
+                                currentFormat === 'pcm16' ? 'audio/L16' : 'audio/wav';
                 currentAudioBlob = base64ToBlob(audioData, mimeType);
                 
                 // 设置播放器
@@ -931,7 +963,7 @@
             if (!currentAudioBlob) return;
             
             const extension = currentFormat === 'mp3' ? 'mp3' : 
-                            currentFormat === 'pcm' ? 'pcm' : 'wav';
+                            currentFormat === 'pcm16' ? 'pcm' : 'wav';
             const filename = `mimo_tts_${Date.now()}.${extension}`;
             
             const url = URL.createObjectURL(currentAudioBlob);
@@ -995,7 +1027,7 @@
         function downloadHistory(index) {
             const item = history[index];
             const extension = item.format === 'mp3' ? 'mp3' : 
-                            item.format === 'pcm' ? 'pcm' : 'wav';
+                            item.format === 'pcm16' ? 'pcm' : 'wav';
             const filename = `mimo_tts_${Date.now()}.${extension}`;
             
             const url = URL.createObjectURL(item.blob);
