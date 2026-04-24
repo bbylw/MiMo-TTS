@@ -585,23 +585,23 @@
                                 </div>
                                 <div class="select-option p-3 rounded-xl text-center" data-style="东北话" onclick="selectStyle(this)">
                                     <div class="text-sm font-medium text-white">🧊 东北话</div>
-                                    <div class="text-xs text-gray-400 mt-1">东北方言</div>
+                                    <div class="text-xs text-gray-400 mt-1" data-dialect-hint="东北方言">东北方言</div>
                                 </div>
                                 <div class="select-option p-3 rounded-xl text-center" data-style="四川话" onclick="selectStyle(this)">
                                     <div class="text-sm font-medium text-white">🌶️ 四川话</div>
-                                    <div class="text-xs text-gray-400 mt-1">四川方言</div>
+                                    <div class="text-xs text-gray-400 mt-1" data-dialect-hint="四川方言">四川方言</div>
                                 </div>
                                 <div class="select-option p-3 rounded-xl text-center" data-style="河南话" onclick="selectStyle(this)">
                                     <div class="text-sm font-medium text-white">🌾 河南话</div>
-                                    <div class="text-xs text-gray-400 mt-1">河南方言</div>
+                                    <div class="text-xs text-gray-400 mt-1" data-dialect-hint="河南方言">河南方言</div>
                                 </div>
                                 <div class="select-option p-3 rounded-xl text-center" data-style="粤语" onclick="selectStyle(this)">
                                     <div class="text-sm font-medium text-white">🍜 粤语</div>
-                                    <div class="text-xs text-gray-400 mt-1">广东话</div>
+                                    <div class="text-xs text-gray-400 mt-1" data-dialect-hint="广东话">广东话</div>
                                 </div>
                                 <div class="select-option p-3 rounded-xl text-center" data-style="台湾腔" onclick="selectStyle(this)">
                                     <div class="text-sm font-medium text-white">🧋 台湾腔</div>
-                                    <div class="text-xs text-gray-400 mt-1">台湾口音</div>
+                                    <div class="text-xs text-gray-400 mt-1" data-dialect-hint="台湾口音">台湾口音</div>
                                 </div>
                                 <div class="select-option p-3 rounded-xl text-center" data-style="夹子音" onclick="selectStyle(this)">
                                     <div class="text-sm font-medium text-white">🎀 夹子音</div>
@@ -651,7 +651,6 @@
                                 <div class="flex justify-between items-center">
                                     <span class="text-gray-400">模型</span>
                                     <span class="text-white font-medium" id="currentModel">mimo-v2.5-tts</span>
-                                    <span class="text-white font-medium">mimo-v2.5-tts</span>
                                 </div>
                                 <div class="flex justify-between items-center">
                                     <span class="text-gray-400">音色</span>
@@ -904,6 +903,13 @@
             updateCurrentConfig();
         }
 
+        function updateDialectHints() {
+            const voicedesignMode = currentModel === 'mimo-v2.5-tts-voicedesign';
+            document.querySelectorAll('[data-dialect-hint]').forEach((el) => {
+                el.textContent = voicedesignMode ? '将作为 user 指令生效' : el.dataset.dialectHint;
+            });
+        }
+
         function updateModelUI() {
             const modelConfig = MODELS[currentModel];
             document.getElementById('currentModel').textContent = currentModel;
@@ -913,6 +919,7 @@
             voiceSelectCard.classList.toggle('hidden', !modelConfig.supportsBuiltinVoice);
             voiceDesignWrap.classList.toggle('hidden', !modelConfig.requiresVoiceDesign);
             voiceCloneWrap.classList.toggle('hidden', !modelConfig.requiresVoiceClone);
+            updateDialectHints();
         }
         
         // 选择音色
@@ -1045,9 +1052,29 @@
                     }
                 }
 
-                const userContent = modelConfig.requiresVoiceDesign
-                    ? voiceDesignDesc.value.trim()
-                    : (userInstruction.value.trim() || '请用自然流畅的语音朗读以下内容');
+                const styleInstruction = currentStyle
+                    ? `请在语音中体现“${currentStyle}”风格或口音，保持自然表达。`
+                    : '';
+
+                let userContent = '';
+                let assistantContent = text;
+
+                if (modelConfig.requiresVoiceDesign) {
+                    const userParts = [`音色描述：${voiceDesignDesc.value.trim()}`];
+                    if (userInstruction.value.trim()) {
+                        userParts.push(`朗读要求：${userInstruction.value.trim()}`);
+                    }
+                    if (styleInstruction) {
+                        userParts.push(styleInstruction);
+                    }
+                    userContent = userParts.join('\n');
+                } else {
+                    const baseInstruction = userInstruction.value.trim() || '请用自然流畅的语音朗读以下内容';
+                    userContent = styleInstruction ? `${baseInstruction} ${styleInstruction}` : baseInstruction;
+                    if (modelConfig.supportsBuiltinVoice && currentStyle) {
+                        assistantContent = `(${currentStyle})${text}`;
+                    }
+                }
 
                 const messages = [
                     {
@@ -1056,7 +1083,7 @@
                     },
                     {
                         role: 'assistant',
-                        content: currentStyle ? `(${currentStyle})${text}` : text
+                        content: assistantContent
                     }
                 ];
 
