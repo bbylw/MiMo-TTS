@@ -218,3 +218,5 @@ MIT License
 - `voiceclone.html`：`mimo-v2.5-tts-voiceclone`（上传样本克隆）
 
 三个模型页面互相可跳转，参数完全隔离，避免相互干扰。
+
+首页提供共享 API Key 状态面板与模型能力说明卡片。
