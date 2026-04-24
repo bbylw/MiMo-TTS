@@ -208,3 +208,13 @@ MIT
 ## 📄 许可证
 
 MIT License
+
+
+## 页面结构（已拆分）
+
+- `index.html`：模型入口页 + API Key 管理
+- `tts.html`：`mimo-v2.5-tts`（内置音色）
+- `voicedesign.html`：`mimo-v2.5-tts-voicedesign`（文本设计音色）
+- `voiceclone.html`：`mimo-v2.5-tts-voiceclone`（上传样本克隆）
+
+三个模型页面互相可跳转，参数完全隔离，避免相互干扰。
