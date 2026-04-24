@@ -273,7 +273,6 @@
                         <div class="flex items-center space-x-2 px-3 py-1.5 glass-light rounded-full">
                             <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
                             <span class="text-xs text-gray-300" id="currentModelBadge">模型: mimo-v2.5-tts</span>
-                            <span class="text-xs text-gray-300">模型: mimo-v2.5-tts</span>
                         </div>
                     </div>
                 </div>
@@ -410,10 +409,6 @@
                                         </div>
                                     </div>
                                     <div class="select-option p-3 rounded-xl" data-voice="Milo" onclick="selectVoice(this)">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="select-option p-3 rounded-xl" data-voice="茉莉" onclick="selectVoice(this)">
                                         <div class="flex items-center">
                                             <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center mr-3">
                                                 <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -442,14 +437,6 @@
                                     <div class="select-option p-3 rounded-xl" data-voice="白桦" onclick="selectVoice(this)">
                                         <div class="flex items-center">
                                             <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500 to-lime-600 flex items-center justify-center mr-3">
-                                                <div class="font-medium text-white">茉莉</div>
-                                                <div class="text-xs text-gray-400">中文 · 女声</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="select-option p-3 rounded-xl" data-voice="Mia" onclick="selectVoice(this)">
-                                        <div class="flex items-center">
-                                            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center mr-3">
                                                 <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.636 18.364a9 9 0 010-12.728m12.728 0a9 9 0 010 12.728m-9.9-2.829a5 5 0 010-7.07m7.072 0a5 5 0 010 7.07M13 12a1 1 0 11-2 0 1 1 0 012 0z"></path>
                                                 </svg>
@@ -469,7 +456,6 @@
                                             </div>
                                             <div>
                                                 <div class="font-medium text-white">Chloe</div>
-                                                <div class="font-medium text-white">Mia</div>
                                                 <div class="text-xs text-gray-400">英文 · 女声</div>
                                             </div>
                                         </div>
@@ -477,16 +463,12 @@
                                     <div class="select-option p-3 rounded-xl" data-voice="Dean" onclick="selectVoice(this)">
                                         <div class="flex items-center">
                                             <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center mr-3">
-                                    <div class="select-option p-3 rounded-xl" data-voice="Milo" onclick="selectVoice(this)">
-                                        <div class="flex items-center">
-                                            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center mr-3">
                                                 <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.636 18.364a9 9 0 010-12.728m12.728 0a9 9 0 010 12.728m-9.9-2.829a5 5 0 010-7.07m7.072 0a5 5 0 010 7.07M13 12a1 1 0 11-2 0 1 1 0 012 0z"></path>
                                                 </svg>
                                             </div>
                                             <div>
                                                 <div class="font-medium text-white">Dean</div>
-                                                <div class="font-medium text-white">Milo</div>
                                                 <div class="text-xs text-gray-400">英文 · 男声</div>
                                             </div>
                                         </div>
@@ -603,23 +585,23 @@
                                 </div>
                                 <div class="select-option p-3 rounded-xl text-center" data-style="东北话" onclick="selectStyle(this)">
                                     <div class="text-sm font-medium text-white">🧊 东北话</div>
-                                    <div class="text-xs text-gray-400 mt-1">东北方言</div>
+                                    <div class="text-xs text-gray-400 mt-1" data-dialect-hint="东北方言">东北方言</div>
                                 </div>
                                 <div class="select-option p-3 rounded-xl text-center" data-style="四川话" onclick="selectStyle(this)">
                                     <div class="text-sm font-medium text-white">🌶️ 四川话</div>
-                                    <div class="text-xs text-gray-400 mt-1">四川方言</div>
+                                    <div class="text-xs text-gray-400 mt-1" data-dialect-hint="四川方言">四川方言</div>
                                 </div>
                                 <div class="select-option p-3 rounded-xl text-center" data-style="河南话" onclick="selectStyle(this)">
                                     <div class="text-sm font-medium text-white">🌾 河南话</div>
-                                    <div class="text-xs text-gray-400 mt-1">河南方言</div>
+                                    <div class="text-xs text-gray-400 mt-1" data-dialect-hint="河南方言">河南方言</div>
                                 </div>
                                 <div class="select-option p-3 rounded-xl text-center" data-style="粤语" onclick="selectStyle(this)">
                                     <div class="text-sm font-medium text-white">🍜 粤语</div>
-                                    <div class="text-xs text-gray-400 mt-1">广东话</div>
+                                    <div class="text-xs text-gray-400 mt-1" data-dialect-hint="广东话">广东话</div>
                                 </div>
                                 <div class="select-option p-3 rounded-xl text-center" data-style="台湾腔" onclick="selectStyle(this)">
                                     <div class="text-sm font-medium text-white">🧋 台湾腔</div>
-                                    <div class="text-xs text-gray-400 mt-1">台湾口音</div>
+                                    <div class="text-xs text-gray-400 mt-1" data-dialect-hint="台湾口音">台湾口音</div>
                                 </div>
                                 <div class="select-option p-3 rounded-xl text-center" data-style="夹子音" onclick="selectStyle(this)">
                                     <div class="text-sm font-medium text-white">🎀 夹子音</div>
@@ -669,7 +651,6 @@
                                 <div class="flex justify-between items-center">
                                     <span class="text-gray-400">模型</span>
                                     <span class="text-white font-medium" id="currentModel">mimo-v2.5-tts</span>
-                                    <span class="text-white font-medium">mimo-v2.5-tts</span>
                                 </div>
                                 <div class="flex justify-between items-center">
                                     <span class="text-gray-400">音色</span>
@@ -922,6 +903,13 @@
             updateCurrentConfig();
         }
 
+        function updateDialectHints() {
+            const voicedesignMode = currentModel === 'mimo-v2.5-tts-voicedesign';
+            document.querySelectorAll('[data-dialect-hint]').forEach((el) => {
+                el.textContent = voicedesignMode ? '将作为 user 指令生效' : el.dataset.dialectHint;
+            });
+        }
+
         function updateModelUI() {
             const modelConfig = MODELS[currentModel];
             document.getElementById('currentModel').textContent = currentModel;
@@ -931,6 +919,7 @@
             voiceSelectCard.classList.toggle('hidden', !modelConfig.supportsBuiltinVoice);
             voiceDesignWrap.classList.toggle('hidden', !modelConfig.requiresVoiceDesign);
             voiceCloneWrap.classList.toggle('hidden', !modelConfig.requiresVoiceClone);
+            updateDialectHints();
         }
         
         // 选择音色
@@ -969,7 +958,6 @@
                 '白桦': '白桦',
                 'Chloe': 'Chloe',
                 'Dean': 'Dean'
-                'Milo': 'Milo'
             };
             
             const formatNames = {
@@ -1064,19 +1052,38 @@
                     }
                 }
 
-                const userContent = modelConfig.requiresVoiceDesign
-                    ? voiceDesignDesc.value.trim()
-                    : (userInstruction.value.trim() || '请用自然流畅的语音朗读以下内容');
+                const styleInstruction = currentStyle
+                    ? `请在语音中体现“${currentStyle}”风格或口音，保持自然表达。`
+                    : '';
+
+                let userContent = '';
+                let assistantContent = text;
+
+                if (modelConfig.requiresVoiceDesign) {
+                    const userParts = [`音色描述：${voiceDesignDesc.value.trim()}`];
+                    if (userInstruction.value.trim()) {
+                        userParts.push(`朗读要求：${userInstruction.value.trim()}`);
+                    }
+                    if (styleInstruction) {
+                        userParts.push(styleInstruction);
+                    }
+                    userContent = userParts.join('\n');
+                } else {
+                    const baseInstruction = userInstruction.value.trim() || '请用自然流畅的语音朗读以下内容';
+                    userContent = styleInstruction ? `${baseInstruction} ${styleInstruction}` : baseInstruction;
+                    if (modelConfig.supportsBuiltinVoice && currentStyle) {
+                        assistantContent = `(${currentStyle})${text}`;
+                    }
+                }
 
                 const messages = [
                     {
                         role: 'user',
                         content: userContent
-                        content: currentStyle ? `请使用“${currentStyle}”风格进行语音合成，保持自然表达。` : '请用自然流畅的语音朗读以下内容'
                     },
                     {
                         role: 'assistant',
-                        content: currentStyle ? `(${currentStyle})${text}` : text
+                        content: assistantContent
                     }
                 ];
 
