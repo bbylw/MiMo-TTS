@@ -6,55 +6,57 @@
   <title>MiMo TTS · VoiceClone</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="min-h-screen bg-slate-950 text-slate-100">
-  <main class="max-w-5xl mx-auto px-4 py-8 space-y-5">
-    <nav class="text-sm text-slate-300 flex flex-wrap gap-4">
-      <a href="index.html" class="underline">首页</a>
-      <a href="tts.html" class="underline">Built-in TTS</a>
-      <a href="voicedesign.html" class="underline">VoiceDesign</a>
+<body class="min-h-screen bg-slate-950 text-slate-100 antialiased">
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 py-8 space-y-6">
+    <nav class="rounded-2xl border border-white/10 bg-slate-900/70 p-4 text-sm text-slate-300 flex flex-wrap items-center gap-4 backdrop-blur">
+      <a href="index.html" class="hover:text-white">首页</a>
+      <span class="text-slate-600">/</span>
+      <a href="tts.html" class="hover:text-white">Built-in TTS</a>
+      <a href="voicedesign.html" class="hover:text-white">VoiceDesign</a>
+      <span class="ml-auto text-xs text-amber-200 border border-amber-300/30 rounded-full px-2.5 py-1">Voice Clone</span>
     </nav>
 
-    <header class="rounded-2xl border border-amber-500/30 bg-gradient-to-br from-slate-900 to-amber-950 p-6">
-      <h1 class="text-2xl font-bold">mimo-v2.5-tts-voiceclone</h1>
-      <p class="text-sm text-slate-300 mt-2">上传 wav/mp3 样本克隆音色，sample 会转成 Data URL 写入 <code>audio.voice</code>。</p>
+    <header class="rounded-3xl border border-amber-400/30 bg-gradient-to-br from-slate-900 to-amber-950/70 p-7 shadow-2xl shadow-amber-950/20">
+      <h1 class="text-2xl sm:text-3xl font-bold">mimo-v2.5-tts-voiceclone</h1>
+      <p class="text-sm text-slate-300 mt-3">上传 wav/mp3 样本克隆音色，sample 会转成 Data URL 写入 <code>audio.voice</code>。界面已升级，上传与生成链路更直观。</p>
     </header>
 
     <section class="grid lg:grid-cols-3 gap-4">
-      <div class="lg:col-span-2 rounded-2xl border border-slate-800 bg-slate-900 p-5 space-y-4">
+      <div class="lg:col-span-2 rounded-3xl border border-white/10 bg-slate-900/70 p-5 sm:p-6 space-y-5 backdrop-blur">
         <div>
           <label class="text-sm text-slate-300">文本（assistant）</label>
-          <textarea id="text" rows="7" class="mt-1 w-full rounded-lg bg-slate-800 border border-slate-700 px-3 py-2" placeholder="输入要合成的文本"></textarea>
+          <textarea id="text" rows="7" class="mt-1.5 w-full rounded-xl bg-slate-800/85 border border-slate-700 px-3 py-2.5 outline-none focus:border-amber-400 transition" placeholder="输入要合成的文本"></textarea>
         </div>
 
         <div>
           <label class="text-sm text-slate-300">自然语言控制（user，可选）</label>
-          <textarea id="userInstruction" rows="3" class="mt-1 w-full rounded-lg bg-slate-800 border border-slate-700 px-3 py-2" placeholder="例如：语速平稳，语气自然。"></textarea>
+          <textarea id="userInstruction" rows="3" class="mt-1.5 w-full rounded-xl bg-slate-800/85 border border-slate-700 px-3 py-2.5 outline-none focus:border-amber-400 transition" placeholder="例如：语速平稳，语气自然。"></textarea>
         </div>
 
         <div class="grid sm:grid-cols-2 gap-3">
           <div>
             <label class="text-xs text-slate-400">音色样本（必填，wav/mp3）</label>
-            <input id="sample" type="file" accept=".wav,.mp3,audio/wav,audio/mpeg" class="mt-1 w-full rounded-lg bg-slate-800 border border-slate-700 px-3 py-2" />
-            <p class="text-xs text-slate-400 mt-1">Base64 编码后不超过 10MB。</p>
+            <input id="sample" type="file" accept=".wav,.mp3,audio/wav,audio/mpeg" class="mt-1.5 w-full rounded-xl bg-slate-800/85 border border-slate-700 px-3 py-2.5" />
+            <p class="text-xs text-slate-400 mt-1.5">Base64 编码后不超过 10MB。</p>
           </div>
           <div>
             <label class="text-xs text-slate-400">输出格式</label>
-            <select id="format" class="mt-1 w-full rounded-lg bg-slate-800 border border-slate-700 px-3 py-2">
+            <select id="format" class="mt-1.5 w-full rounded-xl bg-slate-800/85 border border-slate-700 px-3 py-2.5">
               <option value="wav">wav</option><option value="mp3">mp3</option><option value="pcm16">pcm16</option>
             </select>
           </div>
         </div>
 
         <div class="flex items-center gap-3">
-          <button id="genBtn" onclick="generate()" class="rounded-lg px-4 py-2 bg-amber-600 hover:bg-amber-500 disabled:opacity-60">生成音频</button>
+          <button id="genBtn" onclick="generate()" class="rounded-xl px-4 py-2.5 bg-amber-600 hover:bg-amber-500 disabled:opacity-60 transition">生成音频</button>
           <span id="msg" class="text-sm text-slate-300"></span>
         </div>
       </div>
 
-      <aside class="rounded-2xl border border-slate-800 bg-slate-900 p-5 space-y-3">
+      <aside class="rounded-3xl border border-white/10 bg-slate-900/70 p-5 sm:p-6 space-y-4 backdrop-blur">
         <h2 class="font-semibold">播放与下载</h2>
         <audio id="player" controls class="w-full"></audio>
-        <button id="downloadBtn" onclick="downloadAudio()" class="w-full rounded-lg px-4 py-2 bg-slate-700 hover:bg-slate-600 disabled:opacity-50" disabled>下载音频</button>
+        <button id="downloadBtn" onclick="downloadAudio()" class="w-full rounded-xl px-4 py-2.5 bg-slate-700 hover:bg-slate-600 disabled:opacity-50 transition" disabled>下载音频</button>
         <p class="text-xs text-slate-400">请先在首页保存 API Key（localStorage: mimo_api_key）。</p>
       </aside>
     </section>
