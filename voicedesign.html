@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MiMo TTS · VoiceDesign</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-slate-950 text-slate-100">
+  <main class="max-w-5xl mx-auto px-4 py-8 space-y-5">
+    <nav class="text-sm text-slate-300 flex flex-wrap gap-4">
+      <a href="index.html" class="underline">首页</a>
+      <a href="tts.html" class="underline">Built-in TTS</a>
+      <a href="voiceclone.html" class="underline">VoiceClone</a>
+    </nav>
+
+    <header class="rounded-2xl border border-emerald-500/30 bg-gradient-to-br from-slate-900 to-emerald-950 p-6">
+      <h1 class="text-2xl font-bold">mimo-v2.5-tts-voicedesign</h1>
+      <p class="text-sm text-slate-300 mt-2">user 音色描述必填。方言/风格建议写入 user 指令，不支持内置音色与唱歌。</p>
+    </header>
+
+    <section class="grid lg:grid-cols-3 gap-4">
+      <div class="lg:col-span-2 rounded-2xl border border-slate-800 bg-slate-900 p-5 space-y-4">
+        <div>
+          <label class="text-sm text-slate-300">文本（assistant）</label>
+          <textarea id="text" rows="7" class="mt-1 w-full rounded-lg bg-slate-800 border border-slate-700 px-3 py-2" placeholder="输入要合成的文本"></textarea>
+        </div>
+
+        <div>
+          <label class="text-sm text-slate-300">音色描述（user，必填）</label>
+          <textarea id="voiceDesc" rows="4" class="mt-1 w-full rounded-lg bg-slate-800 border border-slate-700 px-3 py-2" placeholder="例如：25岁女声，声线温暖清晰，语速中等，情绪积极。"></textarea>
+        </div>
+
+        <div class="grid sm:grid-cols-2 gap-3">
+          <div>
+            <label class="text-xs text-slate-400">额外朗读要求（可选）</label>
+            <textarea id="userInstruction" rows="3" class="mt-1 w-full rounded-lg bg-slate-800 border border-slate-700 px-3 py-2" placeholder="例如：前半段轻快，后半段更平缓。"></textarea>
+          </div>
+          <div>
+            <label class="text-xs text-slate-400">方言/口音（可选）</label>
+            <select id="dialect" class="mt-1 w-full rounded-lg bg-slate-800 border border-slate-700 px-3 py-2">
+              <option value="">不指定</option>
+              <option value="东北话">东北话</option><option value="四川话">四川话</option>
+              <option value="河南话">河南话</option><option value="粤语">粤语</option><option value="台湾腔">台湾腔</option>
+            </select>
+            <p class="text-xs text-amber-300 mt-2">将作为 user 指令生效。</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <select id="format" class="rounded-lg bg-slate-800 border border-slate-700 px-3 py-2">
+            <option value="wav">wav</option><option value="mp3">mp3</option><option value="pcm16">pcm16</option>
+          </select>
+          <button id="genBtn" onclick="generate()" class="rounded-lg px-4 py-2 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-60">生成音频</button>
+          <span id="msg" class="text-sm text-slate-300"></span>
+        </div>
+      </div>
+
+      <aside class="rounded-2xl border border-slate-800 bg-slate-900 p-5 space-y-3">
+        <h2 class="font-semibold">播放与下载</h2>
+        <audio id="player" controls class="w-full"></audio>
+        <button id="downloadBtn" onclick="downloadAudio()" class="w-full rounded-lg px-4 py-2 bg-slate-700 hover:bg-slate-600 disabled:opacity-50" disabled>下载音频</button>
+        <p class="text-xs text-slate-400">请先在首页保存 API Key（localStorage: mimo_api_key）。</p>
+      </aside>
+    </section>
+  </main>
+
+<script>
+const API_URL = 'https://api.xiaomimimo.com/v1/chat/completions';
+const MODEL = 'mimo-v2.5-tts-voicedesign';
+let currentBlob = null;
+
+function getApiKey() { return localStorage.getItem('mimo_api_key'); }
+function setMsg(t, err = false) {
+  const el = document.getElementById('msg');
+  el.textContent = t;
+  el.className = err ? 'text-sm text-rose-300' : 'text-sm text-slate-300';
+}
+function normalizeBase64(s) {
+  const cleaned = String(s).replace(/\s+/g, '').replace(/-/g, '+').replace(/_/g, '/');
+  const pad = cleaned.length % 4;
+  return pad ? cleaned + '='.repeat(4 - pad) : cleaned;
+}
+function base64ToBlob(base64, mimeType) {
+  const b64 = normalizeBase64(base64);
+  const bin = atob(b64);
+  const arr = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+  return new Blob([arr], { type: mimeType });
+}
+function extractAudioData(resp) {
+  return resp?.choices?.[0]?.message?.audio?.data
+    || resp?.choices?.[0]?.audio?.data
+    || resp?.audio?.data
+    || null;
+}
+function setLoading(v) {
+  document.getElementById('genBtn').disabled = v;
+  if (v) setMsg('生成中...');
+}
+function downloadAudio() {
+  if (!currentBlob) return;
+  const format = document.getElementById('format').value;
+  const ext = format === 'mp3' ? 'mp3' : (format === 'pcm16' ? 'pcm' : 'wav');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(currentBlob);
+  a.download = `mimo_voicedesign_${Date.now()}.${ext}`;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+}
+
+async function generate() {
+  const text = document.getElementById('text').value.trim();
+  const voiceDesc = document.getElementById('voiceDesc').value.trim();
+  const instruction = document.getElementById('userInstruction').value.trim();
+  const dialect = document.getElementById('dialect').value;
+  const format = document.getElementById('format').value;
+  const key = getApiKey();
+
+  if (!key) return setMsg('请先在首页保存 API Key', true);
+  if (!text) return setMsg('请输入文本', true);
+  if (!voiceDesc) return setMsg('音色描述为必填', true);
+
+  try {
+    setLoading(true);
+
+    const userParts = [`音色描述：${voiceDesc}`];
+    if (instruction) userParts.push(`朗读要求：${instruction}`);
+    if (dialect) userParts.push(`请使用${dialect}风格/口音进行朗读。`);
+
+    const payload = {
+      model: MODEL,
+      messages: [{ role: 'user', content: userParts.join('\n') }, { role: 'assistant', content: text }],
+      audio: { format }
+    };
+
+    const res = await fetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'api-key': key },
+      body: JSON.stringify(payload)
+    });
+
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(data?.error?.message || `请求失败(${res.status})`);
+
+    const audioData = extractAudioData(data);
+    if (!audioData) throw new Error('接口返回成功但未包含音频数据，请检查账号权限/模型输入。');
+
+    const mime = format === 'mp3' ? 'audio/mpeg' : (format === 'pcm16' ? 'audio/L16' : 'audio/wav');
+    currentBlob = base64ToBlob(audioData, mime);
+    document.getElementById('player').src = URL.createObjectURL(currentBlob);
+    document.getElementById('downloadBtn').disabled = false;
+    setMsg('生成成功');
+  } catch (err) {
+    console.error(err);
+    setMsg(err.message || '生成失败', true);
+  } finally {
+    setLoading(false);
+  }
+}
+</script>
+</body>
+</html>
